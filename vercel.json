@@ -22,11 +22,11 @@
       ]
     }
   ],
-  "rewrites": [
-    { "source": "/api/contact", "destination": "/server/api/contact.js" },
-    { "source": "/api/auth", "destination": "/server/api/auth.js" },
-    { "source": "/api/content", "destination": "/server/api/content.js" }
-  ],
+  "functions": {
+    "api/*.js": {
+      "runtime": "@vercel/node@3"
+    }
+  },
   "cleanUrls": true,
   "trailingSlash": false
 }
