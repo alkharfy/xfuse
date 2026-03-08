@@ -1097,7 +1097,7 @@
 /* Fire exhaust */
 .scene4__exhaust {
   position: absolute;
-  top: 88%;
+  top: 75%;
   left: 50%;
   transform: translateX(-50%);
   width: 40px;
