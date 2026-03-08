@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Xfuse — لوحة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ==================== RESET & BASE ==================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #0C0C1D;
+      --bg-card: #12122A;
+      --bg-elevated: #1A1A35;
+      --bg-surface: #222244;
+      --accent: #3B82F6;
+      --accent-hover: #2563EB;
+      --accent-light: #60A5FA;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --success: #22C55E;
+      --error: #EF4444;
+      --warning: #F59E0B;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.3);
+      --transition: 0.3s ease;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==================== LOGIN PAGE ==================== */
+    .login-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        var(--bg-primary);
+    }
+
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .login-logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .login-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .login-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.875rem 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color var(--transition);
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .login-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .login-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.875rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .login-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .login-error {
+      color: var(--error);
+      font-size: 0.85rem;
+      min-height: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ==================== DASHBOARD LAYOUT ==================== */
+    .dashboard { display: none; min-height: 100vh; }
+    .dashboard.active { display: flex; flex-direction: column; }
+
+    /* Top Bar */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+    }
+
+    .topbar__logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .topbar__label {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+
+    .topbar__actions { display: flex; align-items: center; gap: 0.75rem; }
+
+    .topbar__btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .topbar__btn:hover { color: var(--text-primary); border-color: var(--border-glass); }
+
+    .topbar__btn--danger:hover { color: var(--error); border-color: var(--error); }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ==================== NAVIGATION TABS ==================== */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 0.375rem;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .nav-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .nav-tab:hover { color: var(--text-primary); background: var(--bg-elevated); }
+
+    .nav-tab.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .nav-tab__icon { font-size: 1.1rem; }
+    .nav-tab__count {
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .nav-tab.active .nav-tab__count { background: rgba(255,255,255,0.25); }
+
+    /* ==================== SECTION PANELS ==================== */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Panel Header */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .panel-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.625rem 1.25rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    .btn--outline {
+      background: transparent;
+      border: 1px solid var(--border-glass);
+      color: var(--text-primary);
+    }
+
+    .btn--outline:hover { background: var(--bg-elevated); }
+
+    .btn--danger { background: var(--error); }
+    .btn--danger:hover { background: #DC2626; }
+
+    .btn--success { background: var(--success); }
+
+    .btn--sm { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+
+    /* ==================== OVERVIEW CARDS ==================== */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .overview-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .overview-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+    }
+
+    .overview-card__icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .overview-card__count { font-size: 2rem; font-weight: 800; color: var(--accent-light); }
+    .overview-card__label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
+
+    /* ==================== ITEMS LIST ==================== */
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all var(--transition);
+      cursor: grab;
+    }
+
+    .item-card:hover { border-color: var(--border-glass); }
+    .item-card.dragging { opacity: 0.5; border-color: var(--accent); }
+    .item-card.drag-over { border-color: var(--accent); background: var(--accent-glow); }
+
+    .item-card__drag {
+      color: var(--text-muted);
+      cursor: grab;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .item-card__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8B5CF6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .item-card__content { flex: 1; min-width: 0; }
+
+    .item-card__name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-card__sub {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-card__actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .item-card__btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 0.85rem;
+    }
+
+    .item-card__btn:hover { color: var(--text-primary); border-color: var(--border-glass); }
+    .item-card__btn--delete:hover { color: var(--error); border-color: var(--error); }
+
+    /* Portfolio item with image */
+    .item-card--portfolio {
+      flex-wrap: wrap;
+    }
+
+    .item-card__thumb {
+      width: 80px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: var(--bg-elevated);
+      flex-shrink: 0;
+    }
+
+    .item-card__badge {
+      background: var(--accent-glow);
+      color: var(--accent-light);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* ==================== MODAL ==================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+
+    .modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 1.5rem 0;
+    }
+
+    .modal__title { font-size: 1.25rem; font-weight: 700; }
+
+    .modal__close {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 1.1rem;
+    }
+
+    .modal__close:hover { color: var(--text-primary); border-color: var(--border-glass); }
+
+    .modal__body { padding: 1.5rem; }
+
+    .modal__footer {
+      padding: 0 1.5rem 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-start;
+    }
+
+    /* ==================== FORM ==================== */
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .form-label__lang {
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .form-textarea { min-height: 80px; resize: vertical; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .form-check input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .form-stars {
+      display: flex;
+      gap: 0.25rem;
+      direction: ltr;
+    }
+
+    .form-star {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      transition: color 0.15s;
+      padding: 0.1rem;
+    }
+
+    .form-star.active { color: #FBBF24; }
+    .form-star:hover { color: #FCD34D; }
+
+    /* ==================== TOAST ==================== */
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.25rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+      pointer-events: all;
+      animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toast--success { border-right: 3px solid var(--success); }
+    .toast--error { border-right: 3px solid var(--error); }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+
+    /* ==================== EMPTY STATE ==================== */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state__icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    .empty-state__text { font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+    /* ==================== CONFIRM DIALOG ==================== */
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .confirm-overlay.active { opacity: 1; pointer-events: all; }
+
+    .confirm-dialog {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius);
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .confirm-dialog__icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .confirm-dialog__text { margin-bottom: 1.5rem; color: var(--text-secondary); }
+    .confirm-dialog__actions { display: flex; gap: 0.75rem; justify-content: center; }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+      .main { padding: 1rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .item-card { flex-wrap: wrap; }
+      .item-card__actions { width: 100%; justify-content: flex-end; }
+      .topbar { padding: 0.75rem 1rem; }
+      .nav-tab { padding: 0.6rem 0.75rem; font-size: 0.8rem; }
+      .modal { max-height: 95vh; }
+      .overview-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .overview-grid { grid-template-columns: 1fr; }
+      .nav-tabs { flex-wrap: nowrap; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-surface); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* Loading spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      transition: opacity 0.3s;
+    }
+    .loading-overlay.hide { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== LOADING ==================== -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner" style="width:40px;height:40px;border-width:3px"></div>
+  </div>
+
+  <!-- ==================== LOGIN ==================== -->
+  <div class="login-page" id="loginPage">
+    <div class="login-card">
+      <div class="login-logo">Xfuse</div>
+      <p class="login-subtitle">لوحة التحكم — Dashboard</p>
+      <form class="login-form" id="loginForm">
+        <input type="password" class="login-input" id="loginPassword" placeholder="كلمة السر" autocomplete="current-password" required>
+        <button type="submit" class="login-btn" id="loginBtn">دخول</button>
+        <p class="login-error" id="loginError"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== DASHBOARD ==================== -->
+  <div class="dashboard" id="dashboard">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <span class="topbar__logo">Xfuse</span>
+        <span class="topbar__label">لوحة التحكم</span>
+      </div>
+      <div class="topbar__actions">
+        <a href="/" target="_blank" class="topbar__btn">🌐 الموقع</a>
+        <button class="topbar__btn topbar__btn--danger" id="logoutBtn">🚪 خروج</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-panel="overview">
+          <span class="nav-tab__icon">📊</span>
+          نظرة عامة
+        </button>
+        <button class="nav-tab" data-panel="testimonials">
+          <span class="nav-tab__icon">💬</span>
+          كلام العملاء
+          <span class="nav-tab__count" id="countTestimonials">0</span>
+        </button>
+        <button class="nav-tab" data-panel="team">
+          <span class="nav-tab__icon">👥</span>
+          الفريق
+          <span class="nav-tab__count" id="countTeam">0</span>
+        </button>
+        <button class="nav-tab" data-panel="portfolio">
+          <span class="nav-tab__icon">🎨</span>
+          المشاريع
+          <span class="nav-tab__count" id="countPortfolio">0</span>
+        </button>
+        <button class="nav-tab" data-panel="offers">
+          <span class="nav-tab__icon">🌟</span>
+          العروض
+          <span class="nav-tab__count" id="countOffers">0</span>
+        </button>
+        <button class="nav-tab" data-panel="settings">
+          <span class="nav-tab__icon">⚙️</span>
+          الإعدادات
+        </button>
+      </nav>
+
+      <!-- ===== OVERVIEW PANEL ===== -->
+      <div class="panel active" id="panelOverview">
+        <div class="overview-grid">
+          <div class="overview-card" data-goto="testimonials">
+            <div class="overview-card__icon">💬</div>
+            <div class="overview-card__count" id="overviewTestimonials">0</div>
+            <div class="overview-card__label">شهادة عميل</div>
+          </div>
+          <div class="overview-card" data-goto="team">
+            <div class="overview-card__icon">👥</div>
+            <div class="overview-card__count" id="overviewTeam">0</div>
+            <div class="overview-card__label">عضو فريق</div>
+          </div>
+          <div class="overview-card" data-goto="portfolio">
+            <div class="overview-card__icon">🎨</div>
+            <div class="overview-card__count" id="overviewPortfolio">0</div>
+            <div class="overview-card__label">مشروع</div>
+          </div>
+          <div class="overview-card" data-goto="offers">
+            <div class="overview-card__icon">🌟</div>
+            <div class="overview-card__count" id="overviewOffers">0</div>
+            <div class="overview-card__label">عرض خاص</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TESTIMONIALS PANEL ===== -->
+      <div class="panel" id="panelTestimonials">
+        <div class="panel-header">
+          <h2 class="panel-title">💬 كلام عملائنا</h2>
+          <button class="btn" id="addTestimonialBtn">+ إضافة شهادة</button>
+        </div>
+        <div class="items-list" id="testimonialsList"></div>
+      </div>
+
+      <!-- ===== TEAM PANEL ===== -->
+      <div class="panel" id="panelTeam">
+        <div class="panel-header">
+          <h2 class="panel-title">👥 العقول اللي ورا السحر</h2>
+          <button class="btn" id="addTeamBtn">+ إضافة عضو</button>
+        </div>
+        <div class="items-list" id="teamList"></div>
+      </div>
+
+      <!-- ===== PORTFOLIO PANEL ===== -->
+      <div class="panel" id="panelPortfolio">
+        <div class="panel-header">
+          <h2 class="panel-title">🎨 مشاريع بتتكلم عن نفسها</h2>
+          <button class="btn" id="addProjectBtn">+ إضافة مشروع</button>
+        </div>
+        <div class="items-list" id="portfolioList"></div>
+      </div>
+
+      <!-- ===== OFFERS PANEL ===== -->
+      <div class="panel" id="panelOffers">
+        <div class="panel-header">
+          <h2 class="panel-title">🌟 العروض الخاصة</h2>
+          <button class="btn" id="addOfferBtn">+ إضافة عرض</button>
+        </div>
+        <div class="items-list" id="offersList"></div>
+      </div>
+
+      <!-- ===== SETTINGS PANEL ===== -->
+      <div class="panel" id="panelSettings">
+        <div class="panel-header">
+          <h2 class="panel-title">⚙️ إعدادات عامة</h2>
+        </div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;max-width:500px">
+          <div class="form-group">
+            <label class="form-label">📱 رقم الواتساب (مع كود الدولة)</label>
+            <input class="form-input" id="settingsWhatsapp" value="201029010778" placeholder="201029010778" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">💬 رسالة الواتساب التلقائية</label>
+            <input class="form-input" id="settingsWhatsappMsg" value="مرحباً 👋 حابب أتكلم عن مشروع جديد" placeholder="رسالة ترحيبية...">
+          </div>
+          <button class="btn" id="saveSettingsBtn">💾 حفظ الإعدادات</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title" id="modalTitle">إضافة</h3>
+        <button class="modal__close" id="modalClose">✕</button>
+      </div>
+      <div class="modal__body" id="modalBody"></div>
+      <div class="modal__footer" id="modalFooter">
+        <button class="btn" id="modalSave">💾 حفظ</button>
+        <button class="btn btn--outline" id="modalCancel">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONFIRM DIALOG ==================== -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-dialog">
+      <div class="confirm-dialog__icon">⚠️</div>
+      <p class="confirm-dialog__text" id="confirmText">هل أنت متأكد من الحذف؟</p>
+      <div class="confirm-dialog__actions">
+        <button class="btn btn--danger" id="confirmYes">حذف</button>
+        <button class="btn btn--outline" id="confirmNo">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST CONTAINER ==================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    /* ========================================================
+       Xfuse Dashboard — Client-Side Application
+       ======================================================== */
+
+    // Since this is an admin page served locally or from /admin/,
+    // we need the API base URL. In development it uses relative paths,
+    // in production it's the same origin.
+    const API_BASE = '';
+    const DATA_BASE = '/data';
+
+    // ==================== STATE ====================
+    let authToken = sessionStorage.getItem('xfuse_token') || null;
+    let currentPanel = 'overview';
+    let data = {
+      testimonials: { items: [] },
+      team: { members: [] },
+      portfolio: { projects: [] },
+      offers: { offers: [], whatsappNumber: '201029010778' },
+    };
+    let editingItem = null;
+    let editingType = null;
+    let confirmCallback = null;
+
+    // ==================== INIT ====================
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      if (authToken) {
+        await loadAllData();
+        showDashboard();
+      } else {
+        showLogin();
+      }
+      hideLoading();
+      bindEvents();
+    }
+
+    function hideLoading() {
+      const el = document.getElementById('loadingOverlay');
+      el.classList.add('hide');
+      setTimeout(() => el.remove(), 300);
+    }
+
+    // ==================== AUTH ====================
+    function showLogin() {
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('dashboard').classList.remove('active');
+    }
+
+    function showDashboard() {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('dashboard').classList.add('active');
+      renderAll();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      if (!password) {
+        errorEl.textContent = 'أدخل كلمة السر';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'جاري الدخول...';
+      errorEl.textContent = '';
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.token) {
+          authToken = result.token;
+          sessionStorage.setItem('xfuse_token', authToken);
+          await loadAllData();
+          showDashboard();
+          toast('تم تسجيل الدخول بنجاح ✓', 'success');
+        } else {
+          errorEl.textContent = 'كلمة السر غلط';
+        }
+      } catch {
+        errorEl.textContent = 'خطأ في الاتصال بالسيرفر';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'دخول';
+    }
+
+    function logout() {
+      authToken = null;
+      sessionStorage.removeItem('xfuse_token');
+      showLogin();
+    }
+
+    // ==================== DATA LOADING ====================
+    async function loadAllData() {
+      try {
+        const [t, m, p, o] = await Promise.all([
+          fetchJSON(DATA_BASE + '/testimonials.json'),
+          fetchJSON(DATA_BASE + '/team.json'),
+          fetchJSON(DATA_BASE + '/portfolio.json'),
+          fetchJSON(DATA_BASE + '/offers.json'),
+        ]);
+
+        if (t) data.testimonials = t;
+        if (m) data.team = m;
+        if (p) data.portfolio = p;
+        if (o) data.offers = o;
+
+        // Sort by order
+        data.testimonials.items.sort((a, b) => a.order - b.order);
+        data.team.members.sort((a, b) => a.order - b.order);
+        data.portfolio.projects.sort((a, b) => a.order - b.order);
+        if (data.offers.offers) data.offers.offers.sort((a, b) => a.order - b.order);
+
+      } catch (err) {
+        console.error('Error loading data:', err);
+      }
+    }
+
+    async function fetchJSON(url) {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      return res.json();
+    }
+
+    async function saveData(type, method, body, id) {
+      let url = API_BASE + `/api/content?type=${type}`;
+      if (id) url += `&id=${encodeURIComponent(id)}`;
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (res.status === 401) {
+        toast('انتهت الجلسة — سجل دخول تاني', 'error');
+        logout();
+        return null;
+      }
+
+      return res.json();
+    }
+
+    // ==================== RENDERING ====================
+    function renderAll() {
+      updateCounts();
+      renderTestimonials();
+      renderTeam();
+      renderPortfolio();
+      renderOffers();
+    }
+
+    function updateCounts() {
+      const tc = data.testimonials.items.length;
+      const mc = data.team.members.length;
+      const pc = data.portfolio.projects.length;
+      const oc = (data.offers.offers || []).length;
+
+      document.getElementById('countTestimonials').textContent = tc;
+      document.getElementById('countTeam').textContent = mc;
+      document.getElementById('countPortfolio').textContent = pc;
+      document.getElementById('countOffers').textContent = oc;
+      document.getElementById('overviewTestimonials').textContent = tc;
+      document.getElementById('overviewTeam').textContent = mc;
+      document.getElementById('overviewPortfolio').textContent = pc;
+      document.getElementById('overviewOffers').textContent = oc;
+    }
+
+    // ---------- Testimonials ----------
+    function renderTestimonials() {
+      const list = document.getElementById('testimonialsList');
+      const items = data.testimonials.items;
+
+      if (!items.length) {
+        list.innerHTML = `<div class="empty-state">
+          <div class="empty-state__icon">💬</div>
+          <p class="empty-state__text">مفيش شهادات عملاء لسه. اضغط "إضافة شهادة" عشان تبدأ.</p>
+        </div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item, i) => `
+        <div class="item-card" draggable="true" data-id="${esc(item.id)}" data-type="testimonials" data-index="${i}">
+          <span class="item-card__drag" title="اسحب لتغيير الترتيب">⠿</span>
+          <div class="item-card__avatar">${esc(item.initials)}</div>
+          <div class="item-card__content">
+            <div class="item-card__name">${esc(item.nameAr)} — ${esc(item.nameEn)}</div>
+            <div class="item-card__sub">${esc(item.positionAr)} | ${'⭐'.repeat(item.rating)}</div>
+          </div>
+          <div class="item-card__actions">
+            <button class="item-card__btn" onclick="editTestimonial('${esc(item.id)}')">✏️</button>
+            <button class="item-card__btn item-card__btn--delete" onclick="deleteItem('testimonials','${esc(item.id)}','${esc(item.nameAr)}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+
+      initDragDrop(list, 'testimonials');
+    }
+
+    // ---------- Team ----------
+    function renderTeam() {
+      const list = document.getElementById('teamList');
+      const items = data.team.members;
+
+      if (!items.length) {
+        list.innerHTML = `<div class="empty-state">
+          <div class="empty-state__icon">👥</div>
+          <p class="empty-state__text">مفيش أعضاء فريق لسه. اضغط "إضافة عضو" عشان تبدأ.</p>
+        </div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item, i) => `
+        <div class="item-card" draggable="true" data-id="${esc(item.id)}" data-type="team" data-index="${i}">
+          <span class="item-card__drag" title="اسحب لتغيير الترتيب">⠿</span>
+          <div class="item-card__avatar">${esc(item.initials)}</div>
+          <div class="item-card__content">
+            <div class="item-card__name">${esc(item.nameAr)} — ${esc(item.nameEn)}</div>
+            <div class="item-card__sub">${esc(item.roleAr)}</div>
+          </div>
+          <div class="item-card__actions">
+            <button class="item-card__btn" onclick="editTeamMember('${esc(item.id)}')">✏️</button>
+            <button class="item-card__btn item-card__btn--delete" onclick="deleteItem('team','${esc(item.id)}','${esc(item.nameAr)}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+
+      initDragDrop(list, 'team');
+    }
+
+    // ---------- Portfolio ----------
+    function renderPortfolio() {
+      const list = document.getElementById('portfolioList');
+      const items = data.portfolio.projects;
+
+      if (!items.length) {
+        list.innerHTML = `<div class="empty-state">
+          <div class="empty-state__icon">🎨</div>
+          <p class="empty-state__text">مفيش مشاريع لسه. اضغط "إضافة مشروع" عشان تبدأ.</p>
+        </div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item, i) => `
+        <div class="item-card item-card--portfolio" draggable="true" data-id="${esc(item.id)}" data-type="portfolio" data-index="${i}">
+          <span class="item-card__drag" title="اسحب لتغيير الترتيب">⠿</span>
+          <div class="item-card__content">
+            <div class="item-card__name">
+              ${item.featured ? '<span class="item-card__badge">⭐ مميز</span> ' : ''}
+              ${esc(item.titleAr)}
+            </div>
+            <div class="item-card__sub">${esc(item.tagAr)} — ${esc(item.titleEn)}</div>
+          </div>
+          <div class="item-card__actions">
+            <button class="item-card__btn" onclick="editProject('${esc(item.id)}')">✏️</button>
+            <button class="item-card__btn item-card__btn--delete" onclick="deleteItem('portfolio','${esc(item.id)}','${esc(item.titleAr)}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+
+      initDragDrop(list, 'portfolio');
+    }
+
+    // ==================== MODALS ====================
+    function openModal(title, bodyHTML, onSave) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = bodyHTML;
+      document.getElementById('modalOverlay').classList.add('active');
+
+      const saveBtn = document.getElementById('modalSave');
+      saveBtn.onclick = async () => {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner"></span> جاري الحفظ...';
+        await onSave();
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '💾 حفظ';
+      };
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      editingItem = null;
+      editingType = null;
+    }
+
+    // ---------- Testimonial Form ----------
+    function getTestimonialFormHTML(item) {
+      const d = item || {};
+      return `
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">الاسم <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_nameAr" value="${esc(d.nameAr || '')}" placeholder="محمد حسن">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Name <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_nameEn" value="${esc(d.nameEn || '')}" placeholder="Mohamed Hassan" dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الاختصار (حرفين)</label>
+          <input class="form-input" id="f_initials" value="${esc(d.initials || '')}" placeholder="MH" maxlength="3" style="width:80px" dir="ltr">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">المنصب <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_positionAr" value="${esc(d.positionAr || '')}" placeholder="المدير التنفيذي، TechVentures">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Position <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_positionEn" value="${esc(d.positionEn || '')}" placeholder="CEO, TechVentures" dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الشهادة <span class="form-label__lang">AR</span></label>
+          <textarea class="form-textarea" id="f_quoteAr" placeholder="اكتب رأي العميل بالعربي...">${esc(d.quoteAr || '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Testimonial <span class="form-label__lang">EN</span></label>
+          <textarea class="form-textarea" id="f_quoteEn" placeholder="Write the client testimonial in English..." dir="ltr">${esc(d.quoteEn || '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">التقييم</label>
+          <div class="form-stars" id="f_stars">
+            ${[1,2,3,4,5].map(n => `<button type="button" class="form-star ${n <= (d.rating || 5) ? 'active' : ''}" data-rating="${n}">★</button>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function addTestimonial() {
+      editingItem = null;
+      editingType = 'testimonials';
+      openModal('إضافة شهادة عميل', getTestimonialFormHTML(), saveTestimonial);
+      initStarRating();
+    }
+
+    function editTestimonial(id) {
+      const item = data.testimonials.items.find(i => i.id === id);
+      if (!item) return;
+      editingItem = item;
+      editingType = 'testimonials';
+      openModal('تعديل شهادة — ' + item.nameAr, getTestimonialFormHTML(item), saveTestimonial);
+      initStarRating();
+    }
+
+    async function saveTestimonial() {
+      const itemData = {
+        nameAr: val('f_nameAr'),
+        nameEn: val('f_nameEn'),
+        initials: val('f_initials'),
+        positionAr: val('f_positionAr'),
+        positionEn: val('f_positionEn'),
+        quoteAr: val('f_quoteAr'),
+        quoteEn: val('f_quoteEn'),
+        rating: document.querySelectorAll('#f_stars .form-star.active').length || 5,
+      };
+
+      if (!itemData.nameAr || !itemData.quoteAr) {
+        toast('الاسم والشهادة بالعربي مطلوبين', 'error');
+        return;
+      }
+
+      if (!itemData.initials) {
+        itemData.initials = (itemData.nameEn || itemData.nameAr).split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      }
+
+      try {
+        if (editingItem) {
+          const result = await saveData('testimonials', 'PUT', itemData, editingItem.id);
+          if (result && result.item) {
+            const idx = data.testimonials.items.findIndex(i => i.id === editingItem.id);
+            if (idx > -1) data.testimonials.items[idx] = { ...data.testimonials.items[idx], ...result.item };
+            toast('تم تعديل الشهادة ✓', 'success');
+          }
+        } else {
+          const result = await saveData('testimonials', 'POST', itemData);
+          if (result && result.item) {
+            data.testimonials.items.push(result.item);
+            toast('تم إضافة الشهادة ✓', 'success');
+          }
+        }
+        renderAll();
+        closeModal();
+      } catch {
+        toast('حدث خطأ — حاول تاني', 'error');
+      }
+    }
+
+    // ---------- Team Form ----------
+    function getTeamFormHTML(item) {
+      const d = item || {};
+      return `
+        <div class="form-group">
+          <label class="form-label">الاختصار (حرفين)</label>
+          <input class="form-input" id="f_initials" value="${esc(d.initials || '')}" placeholder="AK" maxlength="3" style="width:80px" dir="ltr">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">الاسم <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_nameAr" value="${esc(d.nameAr || '')}" placeholder="أحمد الخرفي">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Name <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_nameEn" value="${esc(d.nameEn || '')}" placeholder="Ahmed Alkharfy" dir="ltr">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">المنصب <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_roleAr" value="${esc(d.roleAr || '')}" placeholder="المدير التنفيذي والمطور الرئيسي">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_roleEn" value="${esc(d.roleEn || '')}" placeholder="CEO & Lead Developer" dir="ltr">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">اقتباس <span class="form-label__lang">AR</span></label>
+            <textarea class="form-textarea" id="f_quoteAr" placeholder="الكود لازم يحل مشاكل...">${esc(d.quoteAr || '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Quote <span class="form-label__lang">EN</span></label>
+            <textarea class="form-textarea" id="f_quoteEn" placeholder="Code should solve problems..." dir="ltr">${esc(d.quoteEn || '')}</textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">🔗 LinkedIn URL</label>
+            <input class="form-input" id="f_linkedin" value="${esc(d.linkedin || '')}" placeholder="https://linkedin.com/in/..." dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">🐙 GitHub URL</label>
+            <input class="form-input" id="f_github" value="${esc(d.github || '')}" placeholder="https://github.com/..." dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🖼️ مسار صورة العضو</label>
+          <input class="form-input" id="f_image" value="${esc(d.image || '')}" placeholder="/src/assets/images/team/member-1.jpg" dir="ltr">
+        </div>
+      `;
+    }
+
+    function addTeamMember() {
+      editingItem = null;
+      editingType = 'team';
+      openModal('إضافة عضو فريق', getTeamFormHTML(), saveTeamMember);
+    }
+
+    function editTeamMember(id) {
+      const item = data.team.members.find(i => i.id === id);
+      if (!item) return;
+      editingItem = item;
+      editingType = 'team';
+      openModal('تعديل عضو — ' + item.nameAr, getTeamFormHTML(item), saveTeamMember);
+    }
+
+    async function saveTeamMember() {
+      const itemData = {
+        initials: val('f_initials'),
+        nameAr: val('f_nameAr'),
+        nameEn: val('f_nameEn'),
+        roleAr: val('f_roleAr'),
+        roleEn: val('f_roleEn'),
+        quoteAr: val('f_quoteAr'),
+        quoteEn: val('f_quoteEn'),
+        linkedin: val('f_linkedin'),
+        github: val('f_github'),
+        image: val('f_image'),
+      };
+
+      if (!itemData.nameAr || !itemData.roleAr) {
+        toast('الاسم والمنصب بالعربي مطلوبين', 'error');
+        return;
+      }
+
+      if (!itemData.initials) {
+        itemData.initials = (itemData.nameEn || itemData.nameAr).split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      }
+
+      // Generate a safe id
+      if (!editingItem) {
+        itemData.id = itemData.initials.toLowerCase();
+      }
+
+      try {
+        if (editingItem) {
+          const result = await saveData('team', 'PUT', itemData, editingItem.id);
+          if (result && result.item) {
+            const idx = data.team.members.findIndex(i => i.id === editingItem.id);
+            if (idx > -1) data.team.members[idx] = { ...data.team.members[idx], ...result.item };
+            toast('تم تعديل بيانات العضو ✓', 'success');
+          }
+        } else {
+          const result = await saveData('team', 'POST', itemData);
+          if (result && result.item) {
+            data.team.members.push(result.item);
+            toast('تم إضافة العضو ✓', 'success');
+          }
+        }
+        renderAll();
+        closeModal();
+      } catch {
+        toast('حدث خطأ — حاول تاني', 'error');
+      }
+    }
+
+    // ---------- Portfolio Form ----------
+    function getProjectFormHTML(item) {
+      const d = item || {};
+      return `
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">العنوان <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_titleAr" value="${esc(d.titleAr || '')}" placeholder="محلك — توصيل فوري">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_titleEn" value="${esc(d.titleEn || '')}" placeholder="Mahallak — Hyperlocal Delivery" dir="ltr">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">التصنيف <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_tagAr" value="${esc(d.tagAr || '')}" placeholder="تطبيق موبايل — Flutter">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tag <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_tagEn" value="${esc(d.tagEn || '')}" placeholder="Mobile App — Flutter" dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الوصف <span class="form-label__lang">AR</span></label>
+          <textarea class="form-textarea" id="f_descAr" placeholder="وصف المشروع بالعربي...">${esc(d.descriptionAr || '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description <span class="form-label__lang">EN</span></label>
+          <textarea class="form-textarea" id="f_descEn" placeholder="Project description in English..." dir="ltr">${esc(d.descriptionEn || '')}</textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">🖼️ مسار الصورة</label>
+            <input class="form-input" id="f_image" value="${esc(d.image || '')}" placeholder="/src/assets/images/portfolio/project.svg" dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">🔗 رابط المشروع</label>
+            <input class="form-input" id="f_link" value="${esc(d.link || '#')}" placeholder="https://..." dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="f_featured" ${d.featured ? 'checked' : ''}>
+            <span>⭐ مشروع مميز (يظهر أكبر في الصفحة)</span>
+          </label>
+        </div>
+      `;
+    }
+
+    function addProject() {
+      editingItem = null;
+      editingType = 'portfolio';
+      openModal('إضافة مشروع', getProjectFormHTML(), saveProject);
+    }
+
+    function editProject(id) {
+      const item = data.portfolio.projects.find(i => i.id === id);
+      if (!item) return;
+      editingItem = item;
+      editingType = 'portfolio';
+      openModal('تعديل مشروع — ' + item.titleAr, getProjectFormHTML(item), saveProject);
+    }
+
+    async function saveProject() {
+      const itemData = {
+        titleAr: val('f_titleAr'),
+        titleEn: val('f_titleEn'),
+        tagAr: val('f_tagAr'),
+        tagEn: val('f_tagEn'),
+        descriptionAr: val('f_descAr'),
+        descriptionEn: val('f_descEn'),
+        image: val('f_image'),
+        link: val('f_link') || '#',
+        featured: document.getElementById('f_featured')?.checked || false,
+      };
+
+      if (!itemData.titleAr) {
+        toast('عنوان المشروع بالعربي مطلوب', 'error');
+        return;
+      }
+
+      try {
+        if (editingItem) {
+          const result = await saveData('portfolio', 'PUT', itemData, editingItem.id);
+          if (result && result.item) {
+            const idx = data.portfolio.projects.findIndex(i => i.id === editingItem.id);
+            if (idx > -1) data.portfolio.projects[idx] = { ...data.portfolio.projects[idx], ...result.item };
+            toast('تم تعديل المشروع ✓', 'success');
+          }
+        } else {
+          const result = await saveData('portfolio', 'POST', itemData);
+          if (result && result.item) {
+            data.portfolio.projects.push(result.item);
+            toast('تم إضافة المشروع ✓', 'success');
+          }
+        }
+        renderAll();
+        closeModal();
+      } catch {
+        toast('حدث خطأ — حاول تاني', 'error');
+      }
+    }
+
+    // ==================== DELETE ====================
+    function deleteItem(type, id, name) {
+      showConfirm(`هل أنت متأكد من حذف "${name}"؟`, async () => {
+        try {
+          const result = await saveData(type, 'DELETE', {}, id);
+          if (result) {
+            const listKey = type === 'testimonials' ? 'items' : type === 'team' ? 'members' : type === 'offers' ? 'offers' : 'projects';
+            data[type][listKey] = data[type][listKey].filter(i => i.id !== id);
+            toast('تم الحذف ✓', 'success');
+            renderAll();
+          }
+        } catch {
+          toast('خطأ في الحذف', 'error');
+        }
+      });
+    }
+
+    // ==================== DRAG & DROP ====================
+    function initDragDrop(container, type) {
+      const cards = container.querySelectorAll('.item-card[draggable]');
+      let draggedEl = null;
+
+      cards.forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          draggedEl = card;
+          card.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+        });
+
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+          container.querySelectorAll('.item-card').forEach(c => c.classList.remove('drag-over'));
+          draggedEl = null;
+        });
+
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          if (card !== draggedEl) {
+            card.classList.add('drag-over');
+          }
+        });
+
+        card.addEventListener('dragleave', () => {
+          card.classList.remove('drag-over');
+        });
+
+        card.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          card.classList.remove('drag-over');
+
+          if (!draggedEl || draggedEl === card) return;
+
+          const listKey = type === 'testimonials' ? 'items' : type === 'team' ? 'members' : type === 'offers' ? 'offers' : 'projects';
+          const items = data[type][listKey];
+          const fromId = draggedEl.dataset.id;
+          const toId = card.dataset.id;
+          const fromIdx = items.findIndex(i => i.id === fromId);
+          const toIdx = items.findIndex(i => i.id === toId);
+
+          if (fromIdx < 0 || toIdx < 0) return;
+
+          // Reorder
+          const [moved] = items.splice(fromIdx, 1);
+          items.splice(toIdx, 0, moved);
+          items.forEach((item, i) => { item.order = i + 1; });
+
+          renderAll();
+
+          // Save order to API
+          try {
+            await saveData(type, 'PUT', { order: items.map(i => i.id) });
+            toast('تم تحديث الترتيب ✓', 'success');
+          } catch {
+            toast('خطأ في حفظ الترتيب', 'error');
+          }
+        });
+      });
+    }
+
+    // ==================== STAR RATING ====================
+    function initStarRating() {
+      const stars = document.querySelectorAll('#f_stars .form-star');
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          const rating = parseInt(star.dataset.rating);
+          stars.forEach(s => {
+            s.classList.toggle('active', parseInt(s.dataset.rating) <= rating);
+          });
+        });
+      });
+    }
+
+    // ==================== CONFIRM DIALOG ====================
+    function showConfirm(text, callback) {
+      document.getElementById('confirmText').textContent = text;
+      document.getElementById('confirmOverlay').classList.add('active');
+      confirmCallback = callback;
+    }
+
+    function hideConfirm() {
+      document.getElementById('confirmOverlay').classList.remove('active');
+      confirmCallback = null;
+    }
+
+    // ==================== TOAST ====================
+    function toast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = `toast toast--${type}`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ==================== UTILS ====================
+    function val(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }
+
+    function esc(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ==================== OFFERS ====================
+    function renderOffers() {
+      const list = document.getElementById('offersList');
+      const items = data.offers.offers || [];
+
+      if (!items.length) {
+        list.innerHTML = `<div class="empty-state">
+          <div class="empty-state__icon">🌟</div>
+          <p class="empty-state__text">مفيش عروض لسه. اضغط "إضافة عرض" عشان تبدأ.</p>
+        </div>`;
+        return;
+      }
+
+      list.innerHTML = items.map((item, i) => `
+        <div class="item-card" draggable="true" data-id="${esc(item.id)}" data-type="offers" data-index="${i}">
+          <span class="item-card__drag" title="اسحب لتغيير الترتيب">⠿</span>
+          <div class="item-card__avatar">${esc(item.icon || '🌟')}</div>
+          <div class="item-card__content">
+            <div class="item-card__name">
+              ${item.popular ? '<span class="item-card__badge">🔥 الأكثر طلباً</span> ' : ''}
+              ${esc(item.titleAr)}
+            </div>
+            <div class="item-card__sub">${esc(item.priceAr)} — ${esc(item.titleEn)}</div>
+          </div>
+          <div class="item-card__actions">
+            <button class="item-card__btn" onclick="editOffer('${esc(item.id)}')">✏️</button>
+            <button class="item-card__btn item-card__btn--delete" onclick="deleteItem('offers','${esc(item.id)}','${esc(item.titleAr)}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+
+      initDragDrop(list, 'offers');
+    }
+
+    function getOfferFormHTML(item) {
+      const d = item || {};
+      return `
+        <div class="form-group">
+          <label class="form-label">🎨 الأيقونة (إيموجي)</label>
+          <input class="form-input" id="f_icon" value="${esc(d.icon || '')}" placeholder="🛒" style="width:80px;text-align:center" dir="ltr">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">العنوان <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_titleAr" value="${esc(d.titleAr || '')}" placeholder="متجر إلكتروني">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_titleEn" value="${esc(d.titleEn || '')}" placeholder="E-commerce Store" dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">الوصف <span class="form-label__lang">AR</span></label>
+          <textarea class="form-textarea" id="f_descAr" placeholder="وصف العرض بالعربي...">${esc(d.descriptionAr || '')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description <span class="form-label__lang">EN</span></label>
+          <textarea class="form-textarea" id="f_descEn" placeholder="Offer description in English..." dir="ltr">${esc(d.descriptionEn || '')}</textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">السعر <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_priceAr" value="${esc(d.priceAr || '')}" placeholder="2,000 جنيه">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_priceEn" value="${esc(d.priceEn || '')}" placeholder="2,000 EGP" dir="ltr">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">شارة <span class="form-label__lang">AR</span></label>
+            <input class="form-input" id="f_badgeAr" value="${esc(d.badgeAr || '')}" placeholder="أفضل قيمة">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Badge <span class="form-label__lang">EN</span></label>
+            <input class="form-input" id="f_badgeEn" value="${esc(d.badgeEn || '')}" placeholder="Best Value" dir="ltr">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">المميزات <span class="form-label__lang">AR</span> (سطر لكل ميزة)</label>
+          <textarea class="form-textarea" id="f_featuresAr" placeholder="دومين خاص\nتصميم متجاوب\nنموذج تواصل">${(d.featuresAr || []).join('\\n')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Features <span class="form-label__lang">EN</span> (one per line)</label>
+          <textarea class="form-textarea" id="f_featuresEn" placeholder="Custom domain\nResponsive design\nContact form" dir="ltr">${(d.featuresEn || []).join('\\n')}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="f_popular" ${d.popular ? 'checked' : ''}>
+            <span>🔥 الأكثر طلباً (يظهر بتمييز خاص)</span>
+          </label>
+        </div>
+      `;
+    }
+
+    function addOffer() {
+      editingItem = null;
+      editingType = 'offers';
+      openModal('إضافة عرض خاص', getOfferFormHTML(), saveOffer);
+    }
+
+    function editOffer(id) {
+      const item = (data.offers.offers || []).find(i => i.id === id);
+      if (!item) return;
+      editingItem = item;
+      editingType = 'offers';
+      openModal('تعديل عرض — ' + item.titleAr, getOfferFormHTML(item), saveOffer);
+    }
+
+    async function saveOffer() {
+      const itemData = {
+        icon: val('f_icon') || '🌟',
+        titleAr: val('f_titleAr'),
+        titleEn: val('f_titleEn'),
+        descriptionAr: val('f_descAr'),
+        descriptionEn: val('f_descEn'),
+        priceAr: val('f_priceAr'),
+        priceEn: val('f_priceEn'),
+        badgeAr: val('f_badgeAr'),
+        badgeEn: val('f_badgeEn'),
+        featuresAr: val('f_featuresAr').split('\n').filter(Boolean),
+        featuresEn: val('f_featuresEn').split('\n').filter(Boolean),
+        popular: document.getElementById('f_popular')?.checked || false,
+      };
+
+      if (!itemData.titleAr || !itemData.priceAr) {
+        toast('العنوان والسعر بالعربي مطلوبين', 'error');
+        return;
+      }
+
+      try {
+        if (editingItem) {
+          const result = await saveData('offers', 'PUT', itemData, editingItem.id);
+          if (result && result.item) {
+            const idx = (data.offers.offers || []).findIndex(i => i.id === editingItem.id);
+            if (idx > -1) data.offers.offers[idx] = { ...data.offers.offers[idx], ...result.item };
+            toast('تم تعديل العرض ✓', 'success');
+          }
+        } else {
+          const result = await saveData('offers', 'POST', itemData);
+          if (result && result.item) {
+            if (!data.offers.offers) data.offers.offers = [];
+            data.offers.offers.push(result.item);
+            toast('تم إضافة العرض ✓', 'success');
+          }
+        }
+        renderAll();
+        closeModal();
+      } catch {
+        toast('حدث خطأ — حاول تاني', 'error');
+      }
+    }
+
+    // ==================== SETTINGS ====================
+    async function saveSettings() {
+      const whatsapp = val('settingsWhatsapp');
+      const msg = val('settingsWhatsappMsg');
+
+      if (!whatsapp) {
+        toast('رقم الواتساب مطلوب', 'error');
+        return;
+      }
+
+      data.offers.whatsappNumber = whatsapp;
+      toast('تم حفظ الإعدادات ✓', 'success');
+    }
+
+    // ==================== EVENT BINDING ====================
+    function bindEvents() {
+      // Login
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+
+      // Tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const panel = tab.dataset.panel;
+          switchPanel(panel);
+        });
+      });
+
+      // Overview cards click
+      document.querySelectorAll('.overview-card[data-goto]').forEach(card => {
+        card.addEventListener('click', () => switchPanel(card.dataset.goto));
+      });
+
+      // Add buttons
+      document.getElementById('addTestimonialBtn').addEventListener('click', addTestimonial);
+      document.getElementById('addTeamBtn').addEventListener('click', addTeamMember);
+      document.getElementById('addProjectBtn').addEventListener('click', addProject);
+      document.getElementById('addOfferBtn').addEventListener('click', addOffer);
+
+      // Settings
+      document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+      // Load WhatsApp number into settings field
+      if (data.offers.whatsappNumber) {
+        document.getElementById('settingsWhatsapp').value = data.offers.whatsappNumber;
+      }
+
+      // Modal
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.getElementById('modalCancel').addEventListener('click', closeModal);
+      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // Confirm
+      document.getElementById('confirmYes').addEventListener('click', () => {
+        if (confirmCallback) confirmCallback();
+        hideConfirm();
+      });
+      document.getElementById('confirmNo').addEventListener('click', hideConfirm);
+      document.getElementById('confirmOverlay').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) hideConfirm();
+      });
+
+      // Keyboard
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+          hideConfirm();
+        }
+      });
+    }
+
+    function switchPanel(name) {
+      currentPanel = name;
+      document.querySelectorAll('.nav-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.panel === name);
+      });
+      document.querySelectorAll('.panel').forEach(p => {
+        const panelName = p.id.replace('panel', '').toLowerCase();
+        // panelOverview -> overview, panelTestimonials -> testimonials, etc.
+        p.classList.toggle('active', panelName === name);
+      });
+    }
+  </script>
+</body>
+</html>

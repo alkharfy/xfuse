@@ -1,0 +1,122 @@
+/* === Process Timeline === */
+.process__timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  max-width: 900px;
+  margin: var(--space-2xl) auto 0;
+}
+
+.process__line {
+  position: absolute;
+  top: 20px;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  height: 2px;
+  background: var(--bg-surface);
+}
+
+.process__line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), #8B5CF6);
+  transform-origin: left;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+[dir="rtl"] .process__line-fill {
+  transform-origin: right;
+}
+
+.process__step {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 0 var(--space-sm);
+}
+
+.process__dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-glass);
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--space-md);
+  font-size: var(--text-small);
+  color: var(--text-muted);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.process__dot.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Pulse ring on active dot */
+.process__dot.active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  opacity: 0;
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%   { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.process__title {
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.process__desc {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Mobile — vertical timeline */
+@media (max-width: 768px) {
+  .process__timeline {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .process__line {
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 20px;
+    inset-inline-end: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .process__line-fill {
+    transform-origin: top;
+    width: 100%;
+  }
+
+  .process__step {
+    text-align: start;
+    padding-inline-start: var(--space-3xl);
+  }
+
+  .process__dot {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    margin: 0;
+  }
+}

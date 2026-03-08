@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found | Xfuse</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0C0C1D;
+      color: #F1F5F9;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    [lang="ar"] body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; direction: rtl; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(59, 130, 246, 0.06), transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(59, 130, 246, 0.04), transparent 40%);
+      pointer-events: none;
+    }
+
+    .error-page {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .error-code {
+      font-size: clamp(6rem, 15vw, 12rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #3B82F6, #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .error-title {
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .error-message {
+      color: #94A3B8;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .error-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background: #3B82F6;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .error-link:hover {
+      background: #2563EB;
+      transform: translateY(-2px);
+    }
+
+    .error-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    [data-lang] { display: none; }
+    [lang="en"] [data-lang="en"],
+    [lang="ar"] [data-lang="ar"] { display: revert; }
+  </style>
+  <script>
+    // Detect saved language preference
+    (function() {
+      var lang = localStorage.getItem('xfuse-lang') || 'en';
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    })();
+  </script>
+</head>
+<body>
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <h1 class="error-title">
+      <span data-lang="en">Page Not Found</span>
+      <span data-lang="ar">الصفحة غير موجودة</span>
+    </h1>
+    <p class="error-message">
+      <span data-lang="en">The page you're looking for doesn't exist or has been moved. Let's get you back on track.</span>
+      <span data-lang="ar">الصفحة التي تبحث عنها غير موجودة أو تم نقلها. دعنا نعيدك للمسار الصحيح.</span>
+    </p>
+    <a href="/" class="error-link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span data-lang="en">Back to Home</span>
+      <span data-lang="ar">العودة للرئيسية</span>
+    </a>
+  </div>
+</body>
+</html>

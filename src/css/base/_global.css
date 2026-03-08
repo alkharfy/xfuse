@@ -1,0 +1,104 @@
+/* === Global Styles === */
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Subtle gradient overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.03), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.02), transparent 40%);
+  pointer-events: none;
+  z-index: var(--z-bg);
+}
+
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: var(--z-bg);
+  opacity: 0.4;
+}
+
+/* Selection */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--text-primary);
+}
+
+/* Smooth scroll for sections */
+html {
+  scroll-padding-top: 5rem;
+}
+
+/* Section spacing */
+.section {
+  padding: var(--space-4xl) 0;
+  position: relative;
+}
+
+/* Section headers */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+  position: relative;
+}
+
+.section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-md);
+}
+
+.section-title {
+  font-size: var(--text-h1);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.section-desc {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Language switching — hide non-active language elements.
+   Uses [data-lang-active] attribute set by JS to show matching elements,
+   preserving their component-level display values (flex, grid, etc.). */
+[data-lang]:not(html):not([data-lang-active]) {
+  display: none !important;
+}
+
+/* Below-fold sections — content-visibility */
+.section--below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* No-JS fallback: ensure all content is visible without JavaScript */
+.no-js .section-header,
+.no-js .social-proof,
+.no-js .why-card,
+.no-js .final-cta__card,
+.no-js .contact-card {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.no-js [data-lang="en"] {
+  display: revert !important;
+}

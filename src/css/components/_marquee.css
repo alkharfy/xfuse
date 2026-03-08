@@ -1,0 +1,59 @@
+/* === Marquee === */
+.marquee {
+  overflow: hidden;
+  padding: var(--space-xl) 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  perspective: 300px;
+}
+
+.marquee__track {
+  transform: rotateX(-2deg);
+}
+
+/* Edge fade */
+.marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+  align-items: center;
+}
+
+[dir="rtl"] .marquee__track {
+  animation-direction: reverse;
+}
+
+.marquee__item {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-muted);
+  white-space: nowrap;
+  padding: 0 var(--space-lg);
+  transition: color var(--transition-base), -webkit-text-stroke var(--transition-base);
+}
+
+.marquee__item:hover {
+  color: var(--accent-primary);
+  -webkit-text-stroke: 0;
+}
+
+.marquee__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+/* Pause on hover */
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}

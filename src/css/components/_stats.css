@@ -1,0 +1,97 @@
+/* === Stats Terminal === */
+.stats__card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.stats__typing {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--accent-light);
+  margin-bottom: var(--space-md);
+  min-height: 1.4em;
+  display: none;
+}
+
+.stats__grid {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.stats__header {
+  display: flex;
+  gap: 6px;
+  margin-bottom: var(--space-lg);
+}
+
+.stats__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.stats__dot--red    { background: #FF5F56; }
+.stats__dot--yellow { background: #FFBD2E; }
+.stats__dot--green  { background: #27C93F; }
+
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats__number {
+  font-size: var(--text-h1);
+  font-weight: 700;
+  color: var(--accent-primary);
+  line-height: 1;
+}
+
+.stats__plus {
+  font-family: var(--font-mono);
+  font-size: var(--text-h2);
+  color: var(--accent-primary);
+}
+
+.stats__label {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+}
+
+.stats__bar {
+  height: 4px;
+  background: var(--bg-surface);
+  border-radius: 2px;
+  margin-top: var(--space-sm);
+  overflow: hidden;
+  width: 100%;
+  max-width: 120px;
+}
+
+.stats__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-light));
+  border-radius: 2px;
+  width: var(--fill);
+  transform-origin: left;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+[dir="rtl"] .stats__bar-fill {
+  transform-origin: right;
+}
+
+.stats__cursor {
+  position: absolute;
+  bottom: var(--space-md);
+  inset-inline-end: var(--space-lg);
+  color: var(--accent-primary);
+  animation: blink 1s step-end infinite;
+  font-size: var(--text-small);
+}

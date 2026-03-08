@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "id": "t1",
+      "nameEn": "Mohamed Hassan",
+      "nameAr": "محمد حسن",
+      "initials": "MH",
+      "positionEn": "CEO, TechVentures",
+      "positionAr": "المدير التنفيذي، TechVentures",
+      "quoteEn": "Xfuse transformed our idea into a product that exceeded all expectations. The app launch went flawlessly and user adoption was immediate.",
+      "quoteAr": "Xfuse حوّلوا فكرتنا لمنتج فاق كل التوقعات. التطبيق اتطلق بسلاسة والمستخدمين اتبنّوه فوراً.",
+      "rating": 5,
+      "order": 1
+    },
+    {
+      "id": "t2",
+      "nameEn": "Sara Abdel-Rahman",
+      "nameAr": "سارة عبد الرحمن",
+      "initials": "SA",
+      "positionEn": "Founder, StyleHub",
+      "positionAr": "المؤسس، StyleHub",
+      "quoteEn": "Working with Xfuse felt different from day one. They understood our business before writing a single line of code. That's rare.",
+      "quoteAr": "الشغل مع Xfuse كان مختلف من أول يوم. فهموا شغلنا قبل ما يكتبوا سطر كود واحد. ده نادر.",
+      "rating": 5,
+      "order": 2
+    },
+    {
+      "id": "t3",
+      "nameEn": "Khaled Mostafa",
+      "nameAr": "احمد خالد",
+      "initials": "KM",
+      "positionEn": "CTO, DataFlow",
+      "positionAr": "المدير التقني، DataFlow",
+      "quoteEn": "Our new platform handles 10x the traffic of our old system, with zero downtime. The team delivered exactly what they promised.",
+      "quoteAr": "المنصة الجديدة بتستحمل 10 أضعاف ترافيك المنصة القديمة، بدون أي عطل. الفريق سلّم بالظبط اللي وعدوا بيه.",
+      "rating": 4,
+      "order": 3
+    }
+  ]
+}

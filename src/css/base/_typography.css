@@ -1,0 +1,56 @@
+/* === Typography === */
+
+[lang="en"] {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+[lang="ar"] {
+  font-family: var(--font-arabic);
+  line-height: 1.8;
+  letter-spacing: 0;
+  word-spacing: normal;
+}
+
+/* Force Cairo on ALL Arabic text elements */
+[data-lang="ar"] {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Display headings */
+.hero__headline,
+.section-title,
+.final-cta__title {
+  font-weight: 800;
+}
+
+[lang="en"] .hero__headline,
+[lang="en"] .section-title,
+[lang="en"] .final-cta__title {
+  font-family: var(--font-display);
+}
+
+[lang="ar"] .hero__headline,
+[lang="ar"] .section-title,
+[lang="ar"] .final-cta__title {
+  font-family: var(--font-arabic);
+}
+
+/* Mono elements */
+.stats__number,
+.service-card__number,
+.process__dot,
+.hero__code-decoration,
+.stats__cursor {
+  font-family: var(--font-mono);
+}
+
+/* Code elements are always LTR */
+code,
+pre,
+.code-element,
+.hero__code-decoration {
+  direction: ltr;
+  text-align: left;
+}

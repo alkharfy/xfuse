@@ -1,0 +1,89 @@
+{
+  "offers": [
+    {
+      "id": "o1",
+      "icon": "👤",
+      "titleEn": "Personal Portfolio",
+      "titleAr": "بورتفوليو شخصي",
+      "descriptionEn": "Professional personal website with your own domain to showcase your work and skills.",
+      "descriptionAr": "موقع شخصي احترافي بالدومين الخاص بيك يعرض شغلك ومهاراتك.",
+      "priceEn": "1,000 EGP",
+      "priceAr": "1,000 جنيه",
+      "badgeEn": "Best Value",
+      "badgeAr": "أفضل قيمة",
+      "popular": false,
+      "featuresEn": [
+        "Custom domain",
+        "Responsive design",
+        "Professional sections",
+        "Contact form"
+      ],
+      "featuresAr": [
+        "دومين خاص",
+        "تصميم متجاوب مع كل الأجهزة",
+        "أقسام احترافية",
+        "نموذج تواصل"
+      ],
+      "order": 1
+    },
+    {
+      "id": "o2",
+      "icon": "🛒",
+      "titleEn": "E-commerce Store",
+      "titleAr": "متجر إلكتروني",
+      "descriptionEn": "Complete online store with your official domain, product management, and payment integration.",
+      "descriptionAr": "متجر أونلاين كامل بالدومين الرسمي وإدارة المنتجات والدفع الإلكتروني.",
+      "priceEn": "2,000 EGP",
+      "priceAr": "2,000 جنيه",
+      "badgeEn": "",
+      "badgeAr": "",
+      "popular": true,
+      "featuresEn": [
+        "Official domain",
+        "Product catalog",
+        "Payment gateway",
+        "Order management",
+        "Admin dashboard"
+      ],
+      "featuresAr": [
+        "دومين رسمي",
+        "كتالوج منتجات",
+        "بوابة دفع إلكتروني",
+        "إدارة الطلبات",
+        "لوحة تحكم"
+      ],
+      "order": 2
+    },
+    {
+      "id": "o3",
+      "icon": "🏢",
+      "titleEn": "Company Website",
+      "titleAr": "موقع تعريفي للشركة",
+      "descriptionEn": "Professional company website that builds trust and attracts clients with a modern design.",
+      "descriptionAr": "موقع احترافي للشركة يبني ثقة ويجذب عملاء بتصميم عصري.",
+      "priceEn": "3,000 EGP",
+      "priceAr": "3,000 جنيه",
+      "badgeEn": "Professional",
+      "badgeAr": "احترافي",
+      "popular": false,
+      "featuresEn": [
+        "Official domain",
+        "Up to 7 pages",
+        "SEO optimized",
+        "Contact & WhatsApp",
+        "Admin dashboard"
+      ],
+      "featuresAr": [
+        "دومين رسمي",
+        "حتى 7 صفحات",
+        "متوافق مع محركات البحث",
+        "تواصل وواتساب",
+        "لوحة تحكم"
+      ],
+      "order": 3
+    }
+  ],
+  "customCtaEn": "Need something custom? Custom apps, systems, and platforms — priced based on your requirements.",
+  "customCtaAr": "محتاج حاجة مخصصة؟ تطبيقات وأنظمة ومنصات مخصصة — السعر حسب الطلب.",
+  "whatsappNumber": "201029010778"
+}

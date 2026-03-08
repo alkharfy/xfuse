@@ -1,0 +1,58 @@
+/* === RTL Overrides === */
+/* Most RTL handled by logical properties, these are edge cases */
+
+[dir="rtl"] {
+  /* Font adjustments for Arabic */
+  letter-spacing: 0 !important;
+}
+
+/* Scene progress dots — flip to left side */
+[dir="rtl"] .scene-progress {
+  right: auto;
+  left: 2rem;
+}
+
+[dir="rtl"] .scene-progress__dot::before {
+  right: auto;
+  left: 20px;
+  content: attr(data-label-ar);
+}
+
+/* Scene 1 — Orbit item positions stay LTR for visual consistency */
+[dir="rtl"] .scene1__content { direction: ltr; }
+[dir="rtl"] .scene1__orbit-item { direction: rtl; } /* but text is RTL */
+
+/* Scene 3 — Code editor stays LTR */
+[dir="rtl"] .scene3__editor { direction: ltr; }
+[dir="rtl"] .scene3__editor-title { margin-left: auto; margin-right: var(--space-sm); }
+[dir="rtl"] .scene3__code-line { direction: ltr; text-align: left; }
+[dir="rtl"] .scene3__term-line { direction: ltr; }
+
+/* Scene 3 — Marquee stays LTR */
+[dir="rtl"] .scene3__marquee-track { direction: ltr; }
+
+/* Scene 4 — Project tag stays LTR */
+[dir="rtl"] .scene4__project-tag { direction: ltr; }
+
+/* Scene 6 — Status indicator stays LTR (monospace) */
+[dir="rtl"] .scene6__status { direction: ltr; }
+
+/* Nav links underline origin */
+[dir="rtl"] .nav__link::after {
+  right: auto;
+  left: 0;
+}
+
+/* Form direction fixes */
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: end;
+}
+
+/* Scroll hint */
+[dir="rtl"] .scene0__scroll-hint { direction: ltr; }
+
+/* Footer social icons row */
+[dir="rtl"] .footer__socials { direction: ltr; }

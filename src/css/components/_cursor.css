@@ -1,0 +1,85 @@
+/* === Custom Cursor === */
+.cursor {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  will-change: transform;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  will-change: transform;
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+/* Hover state — JS toggles this */
+.cursor.is-hover {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-light);
+}
+
+.cursor-ring.is-hover {
+  width: 50px;
+  height: 50px;
+  border-color: var(--accent-primary);
+  opacity: 0.6;
+}
+
+/* Card hover state — larger blurred ring */
+.cursor-ring.is-card {
+  width: 80px;
+  height: 80px;
+  border-color: rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.04);
+  backdrop-filter: blur(4px);
+}
+
+.cursor.is-card {
+  width: 4px;
+  height: 4px;
+  background: var(--accent-primary);
+  mix-blend-mode: screen;
+}
+
+/* Hide on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .cursor,
+  .cursor-ring { display: none; }
+}
+
+/* =========================================
+   Scene-Aware Cursor Colors
+   ========================================= */
+/* Scene 0: spark blue */
+.cursor[data-scene="0"] { background: #60A5FA; }
+.cursor-ring[data-scene="0"] { border-color: rgba(96, 165, 250, 0.3); }
+
+/* Scene 4: space purple */
+.cursor[data-scene="4"] { background: #a78bfa; }
+.cursor-ring[data-scene="4"] { border-color: rgba(167, 139, 250, 0.3); }
+.cursor-ring.is-card[data-scene="4"] { border-color: rgba(167, 139, 250, 0.2); background: rgba(167, 139, 250, 0.04); }
+
+/* Scene 6: mission control green */
+.cursor[data-scene="6"] { background: #34d399; }
+.cursor-ring[data-scene="6"] { border-color: rgba(52, 211, 153, 0.3); }
+.cursor-ring.is-card[data-scene="6"] { border-color: rgba(52, 211, 153, 0.2); background: rgba(52, 211, 153, 0.04); }
+
+/* Scene 7: warm accent */
+.cursor[data-scene="7"] { background: #f59e0b; }
+.cursor-ring[data-scene="7"] { border-color: rgba(245, 158, 11, 0.3); }

@@ -1,0 +1,182 @@
+/* === Team Section === */
+.team-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.team-avatars {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.team-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--border-glass);
+  cursor: pointer;
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--bg-elevated);
+}
+
+.team-avatar__initials {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.team-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.team-avatar.active {
+  border-color: var(--accent-primary);
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.team-avatar.active .team-avatar__initials {
+  color: var(--accent-primary);
+}
+
+/* Glass Card */
+.team-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.04)
+  );
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 40px;
+  padding: var(--space-2xl);
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+@supports not (backdrop-filter: blur()) {
+  .team-card {
+    background: var(--bg-elevated);
+  }
+}
+
+[data-theme="light"] .team-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.5)
+  );
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.team-card__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--accent-primary);
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--space-md);
+  overflow: hidden;
+}
+
+.team-card__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-card__initials {
+  font-family: var(--font-mono);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.team-card__name {
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.team-card__role {
+  font-size: var(--text-small);
+  color: var(--accent-light);
+  margin-bottom: var(--space-lg);
+}
+
+.team-card__quote {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: var(--space-lg);
+  line-height: 1.7;
+}
+
+.team-card__socials {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.team-card__socials a {
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.team-card__socials a:hover {
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+/* Card transitions */
+.team-card.hide-card { animation: cardOut 0.4s ease forwards; }
+.team-card.show-card { animation: cardIn 0.4s ease forwards; }
+
+/* Floating Orbs */
+.team-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  filter: blur(15px);
+  opacity: 0.15;
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.team-orb--1 { width: 200px; height: 200px; top: 10%; inset-inline-start: 5%; }
+.team-orb--2 { width: 120px; height: 120px; top: 60%; inset-inline-end: 10%; }
+.team-orb--3 { width: 80px; height: 80px; bottom: 10%; inset-inline-start: 30%; }
+
+[data-active-member="sa"] .team-orb--1 { top: 30%; inset-inline-end: 5%; }
+[data-active-member="sa"] .team-orb--2 { top: 20%; inset-inline-start: 15%; }
+[data-active-member="mh"] .team-orb--1 { top: 50%; inset-inline-start: 10%; }
+[data-active-member="mh"] .team-orb--2 { top: 10%; inset-inline-end: 15%; }
+[data-active-member="ym"] .team-orb--1 { top: 20%; inset-inline-start: 20%; }
+[data-active-member="ym"] .team-orb--2 { top: 70%; inset-inline-end: 5%; }
+
+@media (max-width: 768px) {
+  .team-orb { display: none; }
+  .team-card { border-radius: 24px; }
+}

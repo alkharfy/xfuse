@@ -1,0 +1,64 @@
+/**
+ * Xfuse — Admin Auth Handler
+ * Vercel Serverless Function
+ * Simple password-based auth with JWT
+ */
+import { SignJWT, jwtVerify } from 'jose';
+
+const SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || 'xfuse-default-secret-change-me');
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'xfuse2024';
+
+export async function createToken() {
+  return await new SignJWT({ role: 'admin' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('24h')
+    .sign(SECRET);
+}
+
+export async function verifyToken(token) {
+  try {
+    const { payload } = await jwtVerify(token, SECRET);
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+export default async function handler(req, res) {
+  // CORS for admin
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { password } = req.body || {};
+
+    if (!password || typeof password !== 'string') {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+
+    // Constant-time comparison to prevent timing attacks
+    const passwordBuffer = Buffer.from(password);
+    const adminBuffer = Buffer.from(ADMIN_PASSWORD);
+
+    if (passwordBuffer.length !== adminBuffer.length ||
+        !require('crypto').timingSafeEqual(passwordBuffer, adminBuffer)) {
+      return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    const token = await createToken();
+    return res.status(200).json({ token });
+  } catch (err) {
+    console.error('Auth error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}

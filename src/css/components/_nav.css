@@ -1,0 +1,290 @@
+/* === Navigation === */
+.nav {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: var(--z-nav);
+  background: rgba(12, 12, 29, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+  padding: var(--space-md) 0;
+  transition: transform var(--transition-base);
+}
+
+.nav--hidden {
+  transform: translateY(-100%);
+}
+
+[data-theme="light"] .nav {
+  background: rgba(248, 250, 252, 0.85);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.nav__logo {
+  z-index: 10;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav__logo-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.nav__link {
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  position: relative;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  inset-inline-start: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width var(--transition-base);
+}
+
+.nav__link:hover {
+  color: var(--text-primary);
+}
+
+.nav__link:hover::after {
+  width: 100%;
+}
+
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.nav__hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.nav__hamburger.active span:nth-child(1) { transform: rotate(45deg) translateY(7px); }
+.nav__hamburger.active span:nth-child(2) { opacity: 0; }
+.nav__hamburger.active span:nth-child(3) { transform: rotate(-45deg) translateY(-7px); }
+
+/* Theme Toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  background: var(--accent-glow);
+}
+
+[data-theme="dark"] .theme-toggle__icon--sun { display: none; }
+[data-theme="light"] .theme-toggle__icon--moon { display: none; }
+[data-theme="dark"] .theme-toggle__icon--moon { display: block; }
+[data-theme="light"] .theme-toggle__icon--sun { display: block; }
+
+/* Language Toggle */
+.lang-toggle {
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+}
+
+.lang-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+/* CTA in Nav */
+.btn--nav {
+  padding: 0.5rem 1.25rem !important;
+  font-size: var(--text-small) !important;
+}
+
+/* Mobile Nav Overlay */
+.nav__overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-overlay);
+  background: rgba(12, 12, 29, 1);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xl);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.nav__overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+[data-theme="light"] .nav__overlay {
+  background: rgba(248, 250, 252, 1);
+}
+
+.nav__overlay-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.nav__overlay-link {
+  font-size: var(--text-h2);
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav__overlay-link:hover {
+  color: var(--accent-primary);
+}
+
+.nav__overlay-actions {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav__links,
+  .nav__actions .btn,
+  .nav__actions .theme-toggle,
+  .nav__actions .lang-toggle {
+    display: none;
+  }
+
+  .nav__hamburger {
+    display: flex;
+  }
+}
+
+/* =========================================
+   Scene-Aware Nav Styling
+   ========================================= */
+
+/* Scene 0: transparent nav, no border */
+[data-scene="0"] .nav {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+[data-scene="0"] .nav--scrolled {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Scene 4 & 6: dark backgrounds — deeper nav */
+[data-scene="4"] .nav,
+[data-scene="6"] .nav {
+  background: rgba(5, 5, 16, 0.85);
+  border-bottom-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Scene 7: subtle accent glow on nav */
+[data-scene="7"] .nav {
+  border-bottom-color: rgba(59, 130, 246, 0.15);
+}
+
+/* Nav link active indicator per scene */
+[data-scene="1"] .nav__link[href="#scene-1"],
+[data-scene="2"] .nav__link[href="#scene-1"],
+[data-scene="3"] .nav__link[href="#scene-1"] {
+  color: var(--text-primary);
+}
+
+[data-scene="1"] .nav__link[href="#scene-1"]::after,
+[data-scene="2"] .nav__link[href="#scene-1"]::after,
+[data-scene="3"] .nav__link[href="#scene-1"]::after {
+  width: 100%;
+}
+
+[data-scene="4"] .nav__link[href="#scene-4"] {
+  color: var(--text-primary);
+}
+
+[data-scene="4"] .nav__link[href="#scene-4"]::after {
+  width: 100%;
+}
+
+[data-scene="5"] .nav__link[href="#scene-5"] {
+  color: var(--text-primary);
+}
+
+[data-scene="5"] .nav__link[href="#scene-5"]::after {
+  width: 100%;
+}
+
+[data-scene="6"] .nav__link[href="#scene-5"]::after,
+[data-scene="7"] .nav__link[href="#scene-7"]::after {
+  width: 100%;
+}
+
+[data-scene="7"] .nav__link[href="#scene-7"] {
+  color: var(--text-primary);
+}

@@ -1,0 +1,60 @@
+{
+  "members": [
+    {
+      "id": "ak",
+      "initials": "AK",
+      "nameEn": "Ahmed Alkharfy",
+      "nameAr": "أحمد الخرفي",
+      "roleEn": "CEO & Lead Developer",
+      "roleAr": "المدير التنفيذي والمطور الرئيسي",
+      "quoteEn": "Code should solve problems, not create them.",
+      "quoteAr": "الكود لازم يحل مشاكل، مش يعمل مشاكل.",
+      "image": "/src/assets/images/team/member-1.jpg",
+      "linkedin": "",
+      "github": "",
+      "order": 1
+    },
+    {
+      "id": "sa",
+      "initials": "SA",
+      "nameEn": "Sarah Ahmed",
+      "nameAr": "سارة أحمد",
+      "roleEn": "UI/UX Designer",
+      "roleAr": "مصممة UI/UX",
+      "quoteEn": "Design is how it works, not just how it looks.",
+      "quoteAr": "التصميم مش الشكل بس — التصميم هو إزاي الحاجة بتشتغل.",
+      "image": "/src/assets/images/team/member-2.jpg",
+      "linkedin": "",
+      "github": "",
+      "order": 2
+    },
+    {
+      "id": "mh",
+      "initials": "MH",
+      "nameEn": "Mohamed Hassan",
+      "nameAr": "محمد حسن",
+      "roleEn": "Frontend Developer",
+      "roleAr": "مطور واجهات أمامية",
+      "quoteEn": "Pixels matter. Every single one.",
+      "quoteAr": "كل بكسل فارق.",
+      "image": "/src/assets/images/team/member-3.jpg",
+      "linkedin": "",
+      "github": "",
+      "order": 3
+    },
+    {
+      "id": "ym",
+      "initials": "YM",
+      "nameEn": "Youssef Mahmoud",
+      "nameAr": "يوسف محمود",
+      "roleEn": "Backend Architect",
+      "roleAr": "مهندس البنية التحتية",
+      "quoteEn": "Scalability is not optional.",
+      "quoteAr": "القابلية للتوسع مش اختيارية.",
+      "image": "/src/assets/images/team/member-4.jpg",
+      "linkedin": "",
+      "github": "",
+      "order": 4
+    }
+  ]
+}

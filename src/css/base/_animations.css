@@ -1,0 +1,132 @@
+/* === Keyframes & Animation Utilities === */
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes orbit-inner {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-outer {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes text-gradient {
+  to { background-position: 200% center; }
+}
+
+@keyframes btn-shine {
+  to { background-position: -200% 0; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+@keyframes cardOut {
+  to {
+    transform: perspective(300px) rotateY(-30deg);
+    opacity: 0;
+  }
+}
+
+@keyframes cardIn {
+  from {
+    transform: perspective(300px) rotateY(30deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(300px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes badge-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(34, 197, 94, 0.15); }
+  50%      { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+}
+
+@keyframes gradient-border {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === CSS Scroll-Driven Animations (Progressive Enhancement) === */
+@supports (animation-timeline: view()) {
+  @keyframes scroll-fade-in {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scroll-scale-in {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .section-header,
+  .section--below-fold .section-label,
+  .section--below-fold .section-title,
+  .section--below-fold .section-desc,
+  .offers__headline,
+  .offers__desc,
+  .faq__headline,
+  .faq__desc {
+    animation: scroll-fade-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+
+  .offers__card,
+  .offers__custom,
+  .faq__item {
+    animation: scroll-scale-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-header,
+  .section--below-fold .section-label,
+  .section--below-fold .section-title,
+  .section--below-fold .section-desc,
+  .offers__headline,
+  .offers__desc,
+  .offers__card,
+  .offers__custom,
+  .faq__headline,
+  .faq__desc,
+  .faq__item {
+    animation: none !important;
+  }
+}

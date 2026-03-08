@@ -1,0 +1,146 @@
+/* === Footer === */
+.footer {
+  border-top: 1px solid var(--border-glass);
+  padding: var(--space-2xl) 0 var(--space-xl);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .footer {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.footer__logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.footer__tagline {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+.footer__col-title {
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+[data-lang="ar"] .footer__col-title {
+  font-family: var(--font-arabic);
+}
+
+.footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer__nav a {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__nav a:hover {
+  color: var(--accent-primary);
+}
+
+.footer__copy {
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.footer__socials {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.footer__socials a {
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.footer__socials a:hover {
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+  background: var(--accent-glow);
+}
+
+.footer__socials svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer__bottom {
+  text-align: center;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer__made {
+  font-size: var(--text-caption);
+  color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-xl);
+  }
+
+  .footer__nav {
+    align-items: center;
+  }
+
+  .footer__nav a {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer__socials {
+    justify-content: center;
+  }
+
+  .footer__socials a {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Footer reveal animation — starts hidden, fades in as user scrolls past last scene */
+.footer {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.footer.footer--visible {
+  opacity: 1;
+  transform: translateY(0);
+}

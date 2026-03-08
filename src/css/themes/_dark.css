@@ -1,0 +1,7 @@
+/* === Dark Theme (Default) === */
+/* Dark mode is the default in :root (_variables.css).
+   This selector exists for explicit [data-theme="dark"] overrides
+   when switching back from light mode at runtime. */
+[data-theme="dark"] {
+  color-scheme: dark;
+}

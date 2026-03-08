@@ -1,0 +1,33 @@
+/* === Badge (Hero Available Badge) === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 16px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 999px;
+  font-size: var(--text-small);
+  color: #22c55e;
+}
+
+.badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.badge {
+  animation: badge-glow 3s ease-in-out infinite;
+}
+
+[data-theme="light"] .badge {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge { animation: none; }
+}

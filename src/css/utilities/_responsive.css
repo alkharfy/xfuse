@@ -1,0 +1,53 @@
+/* === Responsive Breakpoints === */
+/* Additional responsive rules not scoped to individual components */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  :root {
+    --text-display: clamp(2rem, 5vw, 3rem);
+    --text-h1: clamp(1.75rem, 4vw, 2.5rem);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --text-display: clamp(1.75rem, 7vw, 2.5rem);
+    --text-h1: clamp(1.5rem, 5vw, 2rem);
+    --text-h2: clamp(1.25rem, 4vw, 1.75rem);
+  }
+
+  section {
+    padding-block: var(--space-2xl);
+  }
+
+  .section-header__title {
+    font-size: var(--text-h2);
+  }
+
+  /* Hide decorative elements on mobile for performance */
+  .grid-background {
+    background-size: 40px 40px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  :root {
+    --space-section: 64px;
+  }
+
+  .container {
+    padding-inline: var(--space-md);
+  }
+}
+
+/* Prevent text overflow on all viewports */
+.section-title,
+.section-desc,
+.hero__title,
+.final-cta__title,
+.final-cta__desc {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}

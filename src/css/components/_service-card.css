@@ -1,0 +1,122 @@
+/* === Service Cards (with Spotlight) === */
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+/* Decorative line numbers — moved to hover section */
+
+.service-card:hover {
+  border-color: transparent;
+  transform: translateY(-4px);
+}
+
+/* Animated gradient border on hover */
+.service-card::before {
+  content: "01\A02\A03\A04\A05\A06\A07";
+  white-space: pre;
+  position: absolute;
+  inset-inline-start: 0.75rem;
+  top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.15;
+  line-height: 1.8;
+  pointer-events: none;
+  direction: ltr;
+}
+
+.service-card .service-card__border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #3B82F6, #8B5CF6, #06B6D4, #3B82F6);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+  animation: gradient-border 4s ease infinite;
+}
+
+.service-card:hover .service-card__border {
+  opacity: 1;
+}
+
+/* Spotlight Effect — Desktop only */
+@media (hover: hover) and (pointer: fine) {
+  .service-card {
+    --spotlight-x: 50%;
+    --spotlight-y: 50%;
+    --spotlight-opacity: 0;
+  }
+
+  .service-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      600px circle at var(--spotlight-x) var(--spotlight-y),
+      rgba(59, 130, 246, 0.08),
+      transparent 40%
+    );
+    pointer-events: none;
+    opacity: var(--spotlight-opacity);
+    transition: opacity var(--transition-base);
+  }
+
+  .service-card:hover {
+    --spotlight-opacity: 1;
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Light Mode */
+[data-theme="light"] .service-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .service-card:hover {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.service-card__number {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  color: var(--accent-primary);
+  opacity: 0.6;
+}
+
+.service-card__icon {
+  font-size: 2.5rem;
+  margin: var(--space-md) 0;
+  display: block;
+  transition: transform var(--transition-base);
+}
+
+.service-card:hover .service-card__icon {
+  transform: scale(1.15);
+}
+
+.service-card__title {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.service-card__description {
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
