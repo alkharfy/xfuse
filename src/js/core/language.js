@@ -37,3 +37,15 @@ export function initLanguage() {
     langToggles.forEach(btn => { btn.textContent = label; });
   }
 }
+
+/** Re-apply data-lang-active to all current [data-lang] elements (call after dynamic content loads) */
+export function refreshLanguage() {
+  const lang = document.documentElement.lang || 'en';
+  document.querySelectorAll('[data-lang]:not(html)').forEach(el => {
+    if (el.dataset.lang === lang) {
+      el.setAttribute('data-lang-active', '');
+    } else {
+      el.removeAttribute('data-lang-active');
+    }
+  });
+}

@@ -6,7 +6,7 @@ import '../css/main.css';
 // Core (always needed immediately)
 import { initApp } from './core/app.js';
 import { initTheme } from './core/theme.js';
-import { initLanguage } from './core/language.js';
+import { initLanguage, refreshLanguage } from './core/language.js';
 import { initRouter } from './core/router.js';
 
 // Above-the-fold (Scene 0 + Nav + Preloader)
@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error(`[Xfuse] Failed to init ${name}:`, err);
         }
       }
+      // Re-apply language visibility to dynamically loaded content
+      refreshLanguage();
       // Recalculate all ScrollTrigger positions after all scenes (including async data loads) finish
       if (typeof ScrollTrigger !== 'undefined') {
         ScrollTrigger.refresh();
