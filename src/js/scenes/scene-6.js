@@ -72,11 +72,15 @@ export async function initScene6() {
   });
 
   // Testimonials appear as incoming transmissions
+  const testimonialCount = testimonials.length;
+  const testimonialWindow = 0.55; // total timeline range for all testimonials (0.15 → 0.70)
+  const testimonialStagger = testimonialCount > 1 ? testimonialWindow / (testimonialCount - 1) : 0;
+
   testimonials.forEach((test, i) => {
     const signal = test.querySelector('.scene6__signal');
     const card = test.querySelector('.scene6__card');
     const stars = test.querySelectorAll('.scene6__star');
-    const startTime = 0.2 + i * 0.2;
+    const startTime = 0.15 + i * testimonialStagger;
 
     // Signal line appears first
     if (signal) {
