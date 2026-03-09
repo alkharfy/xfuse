@@ -10,8 +10,8 @@ if (!process.env.ADMIN_PASSWORD && process.env.NODE_ENV === 'production') {
   throw new Error('ADMIN_PASSWORD environment variable is required in production');
 }
 
-const SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || 'xfuse-dev-secret-local-only');
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'xfuse2024';
+const SECRET = new TextEncoder().encode((process.env.ADMIN_JWT_SECRET || 'xfuse-dev-secret-local-only').trim());
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || 'xfuse2024').trim();
 
 export async function createToken() {
   return await new SignJWT({ role: 'admin' })
